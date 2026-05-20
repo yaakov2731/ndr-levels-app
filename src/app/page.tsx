@@ -6,17 +6,24 @@ import InputPanel   from '@/components/InputPanel'
 import MetricsPanel from '@/components/MetricsPanel'
 import StatsTable   from '@/components/StatsTable'
 import GapSignalBox from '@/components/GapSignalBox'
+import EdgePanel    from '@/components/EdgePanel'
 import { computeDailyLevels } from '@/lib/calculator'
 import type { NdrSummary, ZoneStat } from '@/lib/types'
 
 const LevelsChart = dynamic(() => import('@/components/LevelsChart'), { ssr: false })
 
 const FILTER_OPTIONS = [
-  { label: 'All Days',  key: 'ALL'      },
-  { label: 'Gap UP',    key: 'GAP_UP'   },
-  { label: 'Gap DOWN',  key: 'GAP_DOWN' },
-  { label: 'HtC Days',  key: 'HtC'      },
-  { label: 'LtC Days',  key: 'LtC'      },
+  { label: 'All Days',      key: 'ALL'              },
+  { label: 'Gap UP',        key: 'GAP_UP'           },
+  { label: 'Gap DOWN',      key: 'GAP_DOWN'         },
+  { label: 'HtC Days',      key: 'HtC'              },
+  { label: 'LtC Days',      key: 'LtC'              },
+  { label: '─────',         key: '__sep__'          },
+  { label: 'NDR Wide (>60)',key: 'NDR_WIDE'         },
+  { label: 'NDR Mid',       key: 'NDR_MID'          },
+  { label: 'NDR Tight(<30)',key: 'NDR_TIGHT'        },
+  { label: 'Wide + Gap UP', key: 'NDR_WIDE_GAP_UP'  },
+  { label: 'Wide + Gap DWN',key: 'NDR_WIDE_GAP_DOWN'},
 ]
 
 // Deterministic pseudo-random seeded by index — stable across renders
@@ -140,9 +147,11 @@ export default function Home() {
                   onChange={(e) => setStatsFilter(e.target.value)}
                   className="bg-[#21262d] border border-[#30363d] text-[#e6edf3] text-xs rounded px-2 py-1 focus:outline-none focus:border-[#58a6ff]"
                 >
-                  {FILTER_OPTIONS.map((o) => (
-                    <option key={o.key} value={o.key}>{o.label}</option>
-                  ))}
+                  {FILTER_OPTIONS.map((o) =>
+                    o.key === '__sep__'
+                      ? <option key="__sep__" disabled>─────────────</option>
+                      : <option key={o.key} value={o.key}>{o.label}</option>
+                  )}
                 </select>
               </div>
               {summary ? (
@@ -153,6 +162,7 @@ export default function Home() {
             </div>
 
             <div className="space-y-4">
+              <EdgePanel levels={levels} summary={summary} />
               <GapSignalBox levels={levels} gapStats={gapStats} />
               <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-4">
                 <div className="text-[10px] uppercase tracking-widest text-[#8b949e] mb-2">Formula</div>

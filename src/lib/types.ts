@@ -35,5 +35,6 @@ export interface NdrSummary {
   date_from: string
   date_to: string
   reversal_min_pts: number
+  ndr_thresholds: { tight_max: number; wide_min: number }
   stats: Record<string, ZoneStat[]>
 }
