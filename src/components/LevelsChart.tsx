@@ -7,14 +7,12 @@ import {
   LineSeries,
   LineStyle,
   type IChartApi,
-  type ISeriesApi,
-  type IPriceLine,
   type Time,
 } from 'lightweight-charts'
 import type { DailyLevels } from '@/lib/types'
 
 interface Props {
-  levels:    DailyLevels
+  levels:     DailyLevels
   entryZone?: 'SELL_25' | 'BUY_25'
 }
 
@@ -34,103 +32,82 @@ const LEVEL_STYLES: Array<{
   { key: 'BUY_100',  label: 'BUY  100%', color: '#44ff44', style: LineStyle.Solid,  width: 2 },
 ]
 
-function buildPriceLines(
-  series:    ISeriesApi<'Line'>,
-  levels:    DailyLevels,
-  entryZone?: 'SELL_25' | 'BUY_25',
-): IPriceLine[] {
-  return LEVEL_STYLES.map(({ key, label, color, style, width }) => {
-    const price   = levels[key] as number
-    const isEntry = key === entryZone
-    return series.createPriceLine({
-      price,
-      color:            isEntry ? '#ffffff' : color,
-      lineWidth:        (isEntry ? 2 : width) as 1 | 2 | 3 | 4,
-      lineStyle:        isEntry ? LineStyle.Dotted : style,
-      axisLabelVisible: true,
-      title:            isEntry
-        ? `>>> ENTRADA  ${price.toFixed(2)}`
-        : `${label}: ${price.toFixed(2)}`,
-    })
-  })
-}
-
 export default function LevelsChart({ levels, entryZone }: Props) {
-  const containerRef  = useRef<HTMLDivElement>(null)
-  const chartRef      = useRef<IChartApi | null>(null)
-  const seriesRef     = useRef<ISeriesApi<'Line'> | null>(null)
-  const priceLinesRef = useRef<IPriceLine[]>([])
-  const levelsRef     = useRef(levels)
-  levelsRef.current   = levels
-  const entryRef      = useRef(entryZone)
-  entryRef.current    = entryZone
+  const containerRef = useRef<HTMLDivElement>(null)
+  const chartRef     = useRef<IChartApi | null>(null)
 
-  // Create chart once
   useEffect(() => {
-    if (!containerRef.current) return
+    const container = containerRef.current
+    if (!container) return
 
-    const chart = createChart(containerRef.current, {
+    // Destroy previous chart before rebuilding
+    if (chartRef.current) {
+      chartRef.current.remove()
+      chartRef.current = null
+    }
+
+    const chart = createChart(container, {
       layout: {
         background: { type: ColorType.Solid, color: '#161b22' },
-        textColor: '#8b949e',
+        textColor:  '#8b949e',
       },
       grid: {
         vertLines: { color: '#21262d' },
         horzLines: { color: '#21262d' },
       },
-      crosshair: { mode: 1 },
-      rightPriceScale: { borderColor: '#30363d' },
+      crosshair:       { mode: 1 },
+      rightPriceScale: { borderColor: '#30363d', autoScale: true },
       timeScale:       { borderColor: '#30363d', visible: false },
-      width:  containerRef.current.clientWidth,
+      width:  container.clientWidth,
       height: 360,
     })
 
-    // Invisible series — only purpose is to host price lines and anchor scale
+    // Invisible anchor series — same color as background so data points are hidden
+    // but still provide the price range for auto-scale
     const series = chart.addSeries(LineSeries, {
-      color:                  'transparent',
+      color:                  '#161b22',
       lineWidth:              1,
       lastValueVisible:       false,
       priceLineVisible:       false,
       crosshairMarkerVisible: false,
     })
 
-    // Two phantom points so the price scale auto-fits to the levels range
-    const d1 = '2000-01-01'
-    const d2 = '2000-01-02'
-    const lvl = levelsRef.current
+    // Phantom data points span SELL_100 → BUY_100 to anchor the visible price range
     series.setData([
-      { time: d1 as Time, value: lvl.SELL_100 },
-      { time: d2 as Time, value: lvl.BUY_100 },
+      { time: '2020-01-01' as Time, value: levels.SELL_100 },
+      { time: '2020-01-02' as Time, value: levels.BUY_100  },
     ])
 
-    priceLinesRef.current = buildPriceLines(series, levelsRef.current, entryRef.current)
+    // Build all price lines
+    LEVEL_STYLES.forEach(({ key, label, color, style, width }) => {
+      const price   = levels[key] as number
+      const isEntry = key === entryZone
+      series.createPriceLine({
+        price,
+        color:            isEntry ? '#ffffff' : color,
+        lineWidth:        (isEntry ? 2 : width) as 1 | 2 | 3 | 4,
+        lineStyle:        isEntry ? LineStyle.Dotted : style,
+        axisLabelVisible: true,
+        title:            isEntry
+          ? `>>> ENTRADA  ${price.toFixed(2)}`
+          : `${label}: ${price.toFixed(2)}`,
+      })
+    })
 
-    chartRef.current  = chart
-    seriesRef.current = series
+    chart.timeScale().fitContent()
+
+    chartRef.current = chart
 
     const ro = new ResizeObserver(() => {
-      if (containerRef.current) chart.applyOptions({ width: containerRef.current.clientWidth })
+      chartRef.current?.applyOptions({ width: container.clientWidth })
     })
-    ro.observe(containerRef.current)
+    ro.observe(container)
 
-    return () => { ro.disconnect(); chart.remove() }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Update price lines + phantom range when levels / entryZone change
-  useEffect(() => {
-    const series = seriesRef.current
-    if (!series) return
-
-    // Update phantom points to new range
-    const d1 = '2000-01-01'
-    const d2 = '2000-01-02'
-    series.setData([
-      { time: d1 as Time, value: levels.SELL_100 },
-      { time: d2 as Time, value: levels.BUY_100  },
-    ])
-
-    priceLinesRef.current.forEach((pl) => series.removePriceLine(pl))
-    priceLinesRef.current = buildPriceLines(series, levels, entryZone)
+    return () => {
+      ro.disconnect()
+      chart.remove()
+      chartRef.current = null
+    }
   }, [levels, entryZone])
 
   return <div ref={containerRef} className="w-full rounded-lg overflow-hidden" />
