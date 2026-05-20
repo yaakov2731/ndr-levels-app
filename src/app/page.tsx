@@ -47,18 +47,14 @@ export default function Home() {
   const [prevClose, setPrevClose] = useState(5432.0)
   const [todayOpen, setTodayOpen] = useState(5435.0)
   const [statsFilter, setStatsFilter] = useState('ALL')
-  const [summary, setSummary] = useState<NdrSummary | null>(null)
+  const [summary, setSummary]   = useState<NdrSummary | null>(null)
   const [timeData, setTimeData] = useState<TimeAnalysis | null>(null)
 
   useEffect(() => {
     fetch('/data/ndr_levels_summary.json')
-      .then((r) => r.json())
-      .then(setSummary)
-      .catch(() => {})
+      .then((r) => r.json()).then(setSummary).catch(() => {})
     fetch('/data/ndr_time_analysis.json')
-      .then((r) => r.json())
-      .then(setTimeData)
-      .catch(() => {})
+      .then((r) => r.json()).then(setTimeData).catch(() => {})
   }, [])
 
   const levels = useMemo(
@@ -67,30 +63,38 @@ export default function Home() {
   )
 
   const activeStats: ZoneStat[] = summary?.stats?.[statsFilter] ?? []
-  const gapKey   = `GAP_${levels.gap_direction}`
-  const gapStats: ZoneStat[] = summary?.stats?.[gapKey] ?? []
+  const gapStats:    ZoneStat[] = summary?.stats?.[`GAP_${levels.gap_direction}`] ?? []
   const entryZone = getEntryZone(levels.gap_direction)
 
   return (
-    <div className="min-h-screen bg-[#0d1117]">
-      {/* Header */}
-      <header className="border-b border-[#30363d] px-6 py-3 flex items-center justify-between">
+    <div className="bg-[#0d1117] flex flex-col min-h-screen">
+
+      {/* ── Header ── */}
+      <header className="flex-shrink-0 border-b border-[#30363d] px-4 md:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-[#e6edf3] font-bold text-lg tracking-tight">NDR Levels</span>
+          <span className="text-[#e6edf3] font-bold text-base md:text-lg tracking-tight">NDR Levels</span>
           <span className="bg-[#21262d] text-[#58a6ff] text-xs px-2 py-0.5 rounded font-mono border border-[#30363d]">
             /ES
           </span>
         </div>
         {summary && (
-          <span className="text-[#8b949e] text-xs">
+          <span className="text-[#8b949e] text-[10px] md:text-xs">
             {summary.total_days.toLocaleString()} days &middot; {summary.date_from.slice(0, 10)} &rarr; {summary.date_to.slice(0, 10)}
           </span>
         )}
       </header>
 
-      <div className="flex" style={{ height: 'calc(100vh - 49px)' }}>
+      {/* ── Body: stack on mobile / row on md+ ── */}
+      <div className="flex flex-col md:flex-row flex-1 md:overflow-hidden">
+
         {/* Sidebar */}
-        <aside className="w-64 border-r border-[#30363d] p-4 overflow-y-auto flex-shrink-0 space-y-4">
+        <aside className="
+          w-full md:w-56 lg:w-64
+          flex-shrink-0
+          border-b md:border-b-0 md:border-r border-[#30363d]
+          p-4 space-y-4
+          md:overflow-y-auto md:h-full
+        ">
           <InputPanel
             prevHigh={prevHigh}   setPrevHigh={setPrevHigh}
             prevLow={prevLow}     setPrevLow={setPrevLow}
@@ -101,31 +105,34 @@ export default function Home() {
         </aside>
 
         {/* Main */}
-        <main className="flex-1 p-4 overflow-y-auto space-y-4">
-          {/* Chart */}
-          <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-4">
+        <main className="flex-1 p-3 md:p-4 space-y-3 md:space-y-4 overflow-y-auto">
+
+          {/* Chart — responsive height */}
+          <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-2 md:p-4 h-[220px] sm:h-[280px] md:h-[360px]">
             <LevelsChart levels={levels} entryZone={entryZone} />
           </div>
 
-          {/* Level reference grid */}
-          <div className="grid grid-cols-7 gap-2">
+          {/* Level reference grid — 4 cols on mobile, 7 on desktop */}
+          <div className="grid grid-cols-4 md:grid-cols-7 gap-1.5 md:gap-2">
             {LEVELS_GRID.map(({ label, key, color }) => (
               <div
                 key={key}
-                className="bg-[#161b22] border border-[#30363d] rounded p-3 text-center"
+                className="bg-[#161b22] border border-[#30363d] rounded p-2 md:p-3 text-center"
                 style={{ borderLeftColor: color, borderLeftWidth: 3 }}
               >
-                <div className="text-[10px] text-[#8b949e] uppercase whitespace-nowrap">{label}</div>
-                <div style={{ color }} className="font-mono font-bold text-sm mt-1">
+                <div className="text-[9px] md:text-[10px] text-[#8b949e] uppercase leading-tight">{label}</div>
+                <div style={{ color }} className="font-mono font-bold text-xs md:text-sm mt-1">
                   {(levels[key as keyof typeof levels] as number).toFixed(2)}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Stats + side panels */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-2 bg-[#161b22] border border-[#30363d] rounded-lg p-4">
+          {/* Stats + right panels */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+
+            {/* Stats table — full width on mobile, 2/3 on desktop */}
+            <div className="md:col-span-2 bg-[#161b22] border border-[#30363d] rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-[#e6edf3]">Historical Statistics</h3>
                 <select
@@ -147,7 +154,8 @@ export default function Home() {
               )}
             </div>
 
-            <div className="space-y-4">
+            {/* Right panels — stacked */}
+            <div className="space-y-3 md:space-y-4">
               <PlanPanel levels={levels} timeData={timeData} />
               <EdgePanel levels={levels} summary={summary} />
               <GapSignalBox levels={levels} gapStats={gapStats} />
@@ -164,6 +172,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+
         </main>
       </div>
     </div>

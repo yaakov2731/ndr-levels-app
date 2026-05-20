@@ -59,7 +59,7 @@ export default function LevelsChart({ levels, entryZone }: Props) {
       rightPriceScale: { borderColor: '#30363d', autoScale: true },
       timeScale:       { borderColor: '#30363d', visible: false },
       width:  container.clientWidth,
-      height: 360,
+      height: container.clientHeight || 240,
     })
 
     // Invisible anchor series — same color as background so data points are hidden
@@ -99,7 +99,12 @@ export default function LevelsChart({ levels, entryZone }: Props) {
     chartRef.current = chart
 
     const ro = new ResizeObserver(() => {
-      chartRef.current?.applyOptions({ width: container.clientWidth })
+      if (container.clientWidth > 0 && container.clientHeight > 0) {
+        chartRef.current?.applyOptions({
+          width:  container.clientWidth,
+          height: container.clientHeight,
+        })
+      }
     })
     ro.observe(container)
 
@@ -110,5 +115,5 @@ export default function LevelsChart({ levels, entryZone }: Props) {
     }
   }, [levels, entryZone])
 
-  return <div ref={containerRef} className="w-full rounded-lg overflow-hidden" />
+  return <div ref={containerRef} className="w-full h-full rounded-lg overflow-hidden" />
 }
