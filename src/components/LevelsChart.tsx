@@ -8,6 +8,7 @@ import {
   LineStyle,
   type IChartApi,
   type ISeriesApi,
+  type IPriceLine,
   type Time,
 } from 'lightweight-charts'
 import type { DailyLevels } from '@/lib/types'
@@ -35,11 +36,33 @@ const LEVEL_STYLES = [
   { key: 'BUY_100'  as keyof DailyLevels, label: 'BUY  100%', color: '#44ff44', style: LineStyle.Solid,  width: 2 },
 ]
 
-export default function LevelsChart({ levels, candles }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const chartRef     = useRef<IChartApi | null>(null)
-  const seriesRef    = useRef<ISeriesApi<'Candlestick'> | null>(null)
+function buildPriceLines(
+  series: ISeriesApi<'Candlestick'>,
+  levels: DailyLevels,
+): IPriceLine[] {
+  return LEVEL_STYLES.map(({ key, label, color, style, width }) => {
+    const price = levels[key] as number
+    return series.createPriceLine({
+      price,
+      color,
+      lineWidth:        width as 1 | 2 | 3 | 4,
+      lineStyle:        style,
+      axisLabelVisible: true,
+      title:            `${label}: ${price.toFixed(2)}`,
+    })
+  })
+}
 
+export default function LevelsChart({ levels, candles }: Props) {
+  const containerRef  = useRef<HTMLDivElement>(null)
+  const chartRef      = useRef<IChartApi | null>(null)
+  const seriesRef     = useRef<ISeriesApi<'Candlestick'> | null>(null)
+  const priceLinesRef = useRef<IPriceLine[]>([])
+  // always-current snapshot of levels so the candle effect can read latest values
+  const levelsRef     = useRef(levels)
+  levelsRef.current   = levels
+
+  // Rebuild chart when candles change (new session data)
   useEffect(() => {
     if (!containerRef.current) return
 
@@ -70,6 +93,9 @@ export default function LevelsChart({ levels, candles }: Props) {
 
     series.setData(candles.map((c) => ({ ...c, time: c.time as Time })))
 
+    // Add price lines immediately using current levels
+    priceLinesRef.current = buildPriceLines(series, levelsRef.current)
+
     chartRef.current  = chart
     seriesRef.current = series
 
@@ -83,21 +109,14 @@ export default function LevelsChart({ levels, candles }: Props) {
     return () => { ro.disconnect(); chart.remove() }
   }, [candles])
 
+  // Update price lines when levels change (no chart rebuild needed)
   useEffect(() => {
     const series = seriesRef.current
     if (!series) return
 
-    LEVEL_STYLES.forEach(({ key, label, color, style, width }) => {
-      const price = levels[key] as number
-      series.createPriceLine({
-        price,
-        color,
-        lineWidth:        width as 1 | 2 | 3 | 4,
-        lineStyle:        style,
-        axisLabelVisible: true,
-        title:            `${label}: ${price.toFixed(2)}`,
-      })
-    })
+    // Remove ALL existing price lines before adding new ones
+    priceLinesRef.current.forEach((pl) => series.removePriceLine(pl))
+    priceLinesRef.current = buildPriceLines(series, levels)
   }, [levels])
 
   return <div ref={containerRef} className="w-full rounded-lg overflow-hidden" />

@@ -19,16 +19,24 @@ const FILTER_OPTIONS = [
   { label: 'LtC Days',  key: 'LtC'      },
 ]
 
-const DEMO_CANDLES = Array.from({ length: 20 }, (_, i) => {
-  const base = 5450
-  const d = new Date('2024-12-01')
-  d.setDate(d.getDate() + i)
-  const o = base + Math.random() * 40 - 20
-  const h = o + Math.random() * 30
-  const l = o - Math.random() * 30
-  const c = l + Math.random() * (h - l)
-  return { time: d.toISOString().slice(0, 10), open: o, high: h, low: l, close: c }
-})
+// Deterministic pseudo-random seeded by index — stable across renders
+function pseudo(i: number, salt: number) {
+  return (Math.sin(i * 127.1 + salt * 0.7) + 1) / 2
+}
+
+function makeDemoCandles(anchor: number, ndrTotal: number) {
+  const spread = Math.max(ndrTotal * 0.25, 15)
+  return Array.from({ length: 20 }, (_, i) => {
+    const d = new Date('2024-12-01')
+    d.setDate(d.getDate() + i)
+    const o = anchor + (pseudo(i, 1) - 0.5) * spread
+    const range = pseudo(i, 2) * spread * 0.5 + 3
+    const h = o + pseudo(i, 3) * range
+    const l = o - pseudo(i, 4) * range
+    const c = l + pseudo(i, 5) * (h - l)
+    return { time: d.toISOString().slice(0, 10), open: o, high: h, low: l, close: c }
+  })
+}
 
 const LEVELS_GRID = [
   { label: 'SELL 100%', key: 'SELL_100', color: '#ff4444' },
@@ -64,6 +72,12 @@ export default function Home() {
   const gapKey   = `GAP_${levels.gap_direction}`
   const gapStats: ZoneStat[] = summary?.stats?.[gapKey] ?? []
 
+  // Demo candles centered on anchor — regenerate only when anchor/NDR changes
+  const demoCandles = useMemo(
+    () => makeDemoCandles(levels.anchor, levels.NDR_total),
+    [levels.anchor, levels.NDR_total],
+  )
+
   return (
     <div className="min-h-screen bg-[#0d1117]">
       {/* Header */}
@@ -97,7 +111,7 @@ export default function Home() {
         <main className="flex-1 p-4 overflow-y-auto space-y-4">
           {/* Chart */}
           <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-4">
-            <LevelsChart levels={levels} candles={DEMO_CANDLES} />
+            <LevelsChart levels={levels} candles={demoCandles} />
           </div>
 
           {/* Level reference grid */}
