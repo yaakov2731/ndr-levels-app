@@ -7,8 +7,9 @@ import MetricsPanel from '@/components/MetricsPanel'
 import StatsTable   from '@/components/StatsTable'
 import GapSignalBox from '@/components/GapSignalBox'
 import EdgePanel    from '@/components/EdgePanel'
+import PlanPanel    from '@/components/PlanPanel'
 import { computeDailyLevels } from '@/lib/calculator'
-import type { NdrSummary, ZoneStat } from '@/lib/types'
+import type { NdrSummary, ZoneStat, TimeAnalysis } from '@/lib/types'
 
 const LevelsChart = dynamic(() => import('@/components/LevelsChart'), { ssr: false })
 
@@ -62,11 +63,16 @@ export default function Home() {
   const [todayOpen, setTodayOpen] = useState(5435.0)
   const [statsFilter, setStatsFilter] = useState('ALL')
   const [summary, setSummary] = useState<NdrSummary | null>(null)
+  const [timeData, setTimeData] = useState<TimeAnalysis | null>(null)
 
   useEffect(() => {
     fetch('/data/ndr_levels_summary.json')
       .then((r) => r.json())
       .then(setSummary)
+      .catch(() => {})
+    fetch('/data/ndr_time_analysis.json')
+      .then((r) => r.json())
+      .then(setTimeData)
       .catch(() => {})
   }, [])
 
@@ -162,6 +168,7 @@ export default function Home() {
             </div>
 
             <div className="space-y-4">
+              <PlanPanel levels={levels} timeData={timeData} />
               <EdgePanel levels={levels} summary={summary} />
               <GapSignalBox levels={levels} gapStats={gapStats} />
               <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-4">

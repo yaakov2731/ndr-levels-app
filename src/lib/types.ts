@@ -38,3 +38,14 @@ export interface NdrSummary {
   ndr_thresholds: { tight_max: number; wide_min: number }
   stats: Record<string, ZoneStat[]>
 }
+
+export interface HourStat {
+  hour: number
+  hour_label: string
+  count: number
+  rev10_pct: number
+  rev20_pct: number
+  avg_rev: number
+}
+
+export type TimeAnalysis = Record<string, HourStat[]>
