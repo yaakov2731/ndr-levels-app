@@ -27,25 +27,6 @@ const FILTER_OPTIONS = [
   { label: 'Wide + Gap DWN',key: 'NDR_WIDE_GAP_DOWN'},
 ]
 
-// Deterministic pseudo-random seeded by index — stable across renders
-function pseudo(i: number, salt: number) {
-  return (Math.sin(i * 127.1 + salt * 0.7) + 1) / 2
-}
-
-function makeDemoCandles(anchor: number, ndrTotal: number) {
-  const spread = Math.max(ndrTotal * 0.25, 15)
-  return Array.from({ length: 20 }, (_, i) => {
-    const d = new Date('2024-12-01')
-    d.setDate(d.getDate() + i)
-    const o = anchor + (pseudo(i, 1) - 0.5) * spread
-    const range = pseudo(i, 2) * spread * 0.5 + 3
-    const h = o + pseudo(i, 3) * range
-    const l = o - pseudo(i, 4) * range
-    const c = l + pseudo(i, 5) * (h - l)
-    return { time: d.toISOString().slice(0, 10), open: o, high: h, low: l, close: c }
-  })
-}
-
 const LEVELS_GRID = [
   { label: 'SELL 100%', key: 'SELL_100', color: '#ff4444' },
   { label: 'SELL  50%', key: 'SELL_50',  color: '#ff8888' },
@@ -55,6 +36,10 @@ const LEVELS_GRID = [
   { label: 'BUY   50%', key: 'BUY_50',  color: '#88ff88' },
   { label: 'BUY  100%', key: 'BUY_100', color: '#44ff44' },
 ]
+
+function getEntryZone(gap: string): 'SELL_25' | 'BUY_25' {
+  return gap === 'UP' ? 'BUY_25' : 'SELL_25'
+}
 
 export default function Home() {
   const [prevHigh,  setPrevHigh]  = useState(5528.0)
@@ -84,12 +69,7 @@ export default function Home() {
   const activeStats: ZoneStat[] = summary?.stats?.[statsFilter] ?? []
   const gapKey   = `GAP_${levels.gap_direction}`
   const gapStats: ZoneStat[] = summary?.stats?.[gapKey] ?? []
-
-  // Demo candles centered on anchor — regenerate only when anchor/NDR changes
-  const demoCandles = useMemo(
-    () => makeDemoCandles(levels.anchor, levels.NDR_total),
-    [levels.anchor, levels.NDR_total],
-  )
+  const entryZone = getEntryZone(levels.gap_direction)
 
   return (
     <div className="min-h-screen bg-[#0d1117]">
@@ -124,7 +104,7 @@ export default function Home() {
         <main className="flex-1 p-4 overflow-y-auto space-y-4">
           {/* Chart */}
           <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-4">
-            <LevelsChart levels={levels} candles={demoCandles} />
+            <LevelsChart levels={levels} entryZone={entryZone} />
           </div>
 
           {/* Level reference grid */}
@@ -143,7 +123,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Stats + Gap signal */}
+          {/* Stats + side panels */}
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 bg-[#161b22] border border-[#30363d] rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
