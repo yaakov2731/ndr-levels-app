@@ -18,7 +18,8 @@
         "touch_pct": 17.7,
         "n_reversed": 590,
         "reversal_pct": 84.0,
-        "avg_reversal_pts": 32.7
+        "avg_reversal_pts": 32.7,
+        "ev_pts": 5.8
       },
       {
         "zone": "SELL_50",
@@ -28,7 +29,8 @@
         "touch_pct": 32.1,
         "n_reversed": 829,
         "reversal_pct": 65.1,
-        "avg_reversal_pts": 20.9
+        "avg_reversal_pts": 20.9,
+        "ev_pts": 6.71
       },
       {
         "zone": "SELL_25",
@@ -38,7 +40,9 @@
         "touch_pct": 41.8,
         "n_reversed": 859,
         "reversal_pct": 51.9,
-        "avg_reversal_pts": 15.2
+        "avg_reversal_pts": 15.2,
+        "ev_pts": 6.35,
+        "continuation_pct": 30.4
       },
       {
         "zone": "BUY_25",
@@ -48,7 +52,9 @@
         "touch_pct": 48.1,
         "n_reversed": 871,
         "reversal_pct": 45.6,
-        "avg_reversal_pts": 12.6
+        "avg_reversal_pts": 12.6,
+        "ev_pts": 6.04,
+        "continuation_pct": 22.0
       },
       {
         "zone": "BUY_50",
@@ -58,7 +64,8 @@
         "touch_pct": 41.3,
         "n_reversed": 1016,
         "reversal_pct": 62.1,
-        "avg_reversal_pts": 17.6
+        "avg_reversal_pts": 17.6,
+        "ev_pts": 7.28
       },
       {
         "zone": "BUY_100",
@@ -68,7 +75,8 @@
         "touch_pct": 25.7,
         "n_reversed": 831,
         "reversal_pct": 81.6,
-        "avg_reversal_pts": 27.6
+        "avg_reversal_pts": 27.6,
+        "ev_pts": 7.09
       }
     ],
     "GAP_UP": [
@@ -80,7 +88,8 @@
         "touch_pct": 15.3,
         "n_reversed": 150,
         "reversal_pct": 84.7,
-        "avg_reversal_pts": 31.0
+        "avg_reversal_pts": 31.0,
+        "ev_pts": 4.74
       },
       {
         "zone": "SELL_50",
@@ -90,7 +99,8 @@
         "touch_pct": 27.8,
         "n_reversed": 197,
         "reversal_pct": 61.2,
-        "avg_reversal_pts": 19.5
+        "avg_reversal_pts": 19.5,
+        "ev_pts": 5.44
       },
       {
         "zone": "SELL_25",
@@ -100,7 +110,9 @@
         "touch_pct": 36.4,
         "n_reversed": 199,
         "reversal_pct": 47.3,
-        "avg_reversal_pts": 13.4
+        "avg_reversal_pts": 13.4,
+        "ev_pts": 4.88,
+        "continuation_pct": 28.5
       },
       {
         "zone": "BUY_25",
@@ -110,7 +122,9 @@
         "touch_pct": 39.4,
         "n_reversed": 213,
         "reversal_pct": 46.7,
-        "avg_reversal_pts": 12.1
+        "avg_reversal_pts": 12.1,
+        "ev_pts": 4.78,
+        "continuation_pct": 21.7
       },
       {
         "zone": "BUY_50",
@@ -120,7 +134,8 @@
         "touch_pct": 33.9,
         "n_reversed": 248,
         "reversal_pct": 63.3,
-        "avg_reversal_pts": 17.6
+        "avg_reversal_pts": 17.6,
+        "ev_pts": 5.96
       },
       {
         "zone": "BUY_100",
@@ -130,7 +145,8 @@
         "touch_pct": 20.7,
         "n_reversed": 201,
         "reversal_pct": 83.8,
-        "avg_reversal_pts": 28.9
+        "avg_reversal_pts": 28.9,
+        "ev_pts": 5.99
       }
     ],
     "GAP_DOWN": [
@@ -142,7 +158,8 @@
         "touch_pct": 14.7,
         "n_reversed": 139,
         "reversal_pct": 86.3,
-        "avg_reversal_pts": 37.1
+        "avg_reversal_pts": 37.1,
+        "ev_pts": 5.45
       },
       {
         "zone": "SELL_50",
@@ -152,7 +169,8 @@
         "touch_pct": 26.4,
         "n_reversed": 202,
         "reversal_pct": 69.7,
-        "avg_reversal_pts": 24.8
+        "avg_reversal_pts": 24.8,
+        "ev_pts": 6.56
       },
       {
         "zone": "SELL_25",
@@ -162,7 +180,9 @@
         "touch_pct": 32.9,
         "n_reversed": 207,
         "reversal_pct": 57.3,
-        "avg_reversal_pts": 18.2
+        "avg_reversal_pts": 18.2,
+        "ev_pts": 5.99,
+        "continuation_pct": 30.5
       },
       {
         "zone": "BUY_25",
@@ -172,7 +192,9 @@
         "touch_pct": 38.7,
         "n_reversed": 193,
         "reversal_pct": 45.5,
-        "avg_reversal_pts": 14.2
+        "avg_reversal_pts": 14.2,
+        "ev_pts": 5.47,
+        "continuation_pct": 23.8
       },
       {
         "zone": "BUY_50",
@@ -182,7 +204,8 @@
         "touch_pct": 32.7,
         "n_reversed": 222,
         "reversal_pct": 61.8,
-        "avg_reversal_pts": 19.9
+        "avg_reversal_pts": 19.9,
+        "ev_pts": 6.5
       },
       {
         "zone": "BUY_100",
@@ -192,7 +215,8 @@
         "touch_pct": 20.3,
         "n_reversed": 185,
         "reversal_pct": 83.0,
-        "avg_reversal_pts": 30.8
+        "avg_reversal_pts": 30.8,
+        "ev_pts": 6.27
       }
     ],
     "GAP_FLAT": [
@@ -204,7 +228,8 @@
         "touch_pct": 21.3,
         "n_reversed": 301,
         "reversal_pct": 82.7,
-        "avg_reversal_pts": 31.6
+        "avg_reversal_pts": 31.6,
+        "ev_pts": 6.73
       },
       {
         "zone": "SELL_50",
@@ -214,7 +239,8 @@
         "touch_pct": 38.7,
         "n_reversed": 430,
         "reversal_pct": 65.0,
-        "avg_reversal_pts": 19.8
+        "avg_reversal_pts": 19.8,
+        "ev_pts": 7.66
       },
       {
         "zone": "SELL_25",
@@ -224,7 +250,9 @@
         "touch_pct": 51.1,
         "n_reversed": 453,
         "reversal_pct": 51.8,
-        "avg_reversal_pts": 14.8
+        "avg_reversal_pts": 14.8,
+        "ev_pts": 7.58,
+        "continuation_pct": 31.4
       },
       {
         "zone": "BUY_25",
@@ -234,7 +262,9 @@
         "touch_pct": 60.1,
         "n_reversed": 465,
         "reversal_pct": 45.2,
-        "avg_reversal_pts": 12.1
+        "avg_reversal_pts": 12.1,
+        "ev_pts": 7.26,
+        "continuation_pct": 21.3
       },
       {
         "zone": "BUY_50",
@@ -244,7 +274,8 @@
         "touch_pct": 51.8,
         "n_reversed": 546,
         "reversal_pct": 61.6,
-        "avg_reversal_pts": 16.7
+        "avg_reversal_pts": 16.7,
+        "ev_pts": 8.67
       },
       {
         "zone": "BUY_100",
@@ -254,7 +285,8 @@
         "touch_pct": 32.4,
         "n_reversed": 445,
         "reversal_pct": 80.2,
-        "avg_reversal_pts": 25.8
+        "avg_reversal_pts": 25.8,
+        "ev_pts": 8.36
       }
     ],
     "HtC": [
@@ -266,7 +298,8 @@
         "touch_pct": 23.6,
         "n_reversed": 222,
         "reversal_pct": 87.4,
-        "avg_reversal_pts": 35.9
+        "avg_reversal_pts": 35.9,
+        "ev_pts": 8.47
       },
       {
         "zone": "SELL_50",
@@ -276,7 +309,8 @@
         "touch_pct": 41.1,
         "n_reversed": 319,
         "reversal_pct": 72.2,
-        "avg_reversal_pts": 22.4
+        "avg_reversal_pts": 22.4,
+        "ev_pts": 9.22
       },
       {
         "zone": "SELL_25",
@@ -286,7 +320,9 @@
         "touch_pct": 53.9,
         "n_reversed": 319,
         "reversal_pct": 55.0,
-        "avg_reversal_pts": 16.2
+        "avg_reversal_pts": 16.2,
+        "ev_pts": 8.71,
+        "continuation_pct": 30.3
       },
       {
         "zone": "BUY_25",
@@ -296,7 +332,9 @@
         "touch_pct": 62.5,
         "n_reversed": 334,
         "reversal_pct": 49.6,
-        "avg_reversal_pts": 13.4
+        "avg_reversal_pts": 13.4,
+        "ev_pts": 8.39,
+        "continuation_pct": 22.6
       },
       {
         "zone": "BUY_50",
@@ -306,7 +344,8 @@
         "touch_pct": 53.7,
         "n_reversed": 381,
         "reversal_pct": 65.9,
-        "avg_reversal_pts": 18.6
+        "avg_reversal_pts": 18.6,
+        "ev_pts": 9.99
       },
       {
         "zone": "BUY_100",
@@ -316,7 +355,8 @@
         "touch_pct": 34.0,
         "n_reversed": 313,
         "reversal_pct": 85.5,
-        "avg_reversal_pts": 29.2
+        "avg_reversal_pts": 29.2,
+        "ev_pts": 9.93
       }
     ],
     "LtC": [
@@ -328,7 +368,8 @@
         "touch_pct": 24.5,
         "n_reversed": 238,
         "reversal_pct": 84.1,
-        "avg_reversal_pts": 30.9
+        "avg_reversal_pts": 30.9,
+        "ev_pts": 7.57
       },
       {
         "zone": "SELL_50",
@@ -338,7 +379,8 @@
         "touch_pct": 44.4,
         "n_reversed": 323,
         "reversal_pct": 62.8,
-        "avg_reversal_pts": 20.1
+        "avg_reversal_pts": 20.1,
+        "ev_pts": 8.93
       },
       {
         "zone": "SELL_25",
@@ -348,7 +390,9 @@
         "touch_pct": 57.0,
         "n_reversed": 341,
         "reversal_pct": 51.7,
-        "avg_reversal_pts": 14.7
+        "avg_reversal_pts": 14.7,
+        "ev_pts": 8.38,
+        "continuation_pct": 31.4
       },
       {
         "zone": "BUY_25",
@@ -358,7 +402,9 @@
         "touch_pct": 63.0,
         "n_reversed": 333,
         "reversal_pct": 45.7,
-        "avg_reversal_pts": 12.3
+        "avg_reversal_pts": 12.3,
+        "ev_pts": 7.74,
+        "continuation_pct": 21.9
       },
       {
         "zone": "BUY_50",
@@ -368,7 +414,8 @@
         "touch_pct": 53.5,
         "n_reversed": 382,
         "reversal_pct": 61.7,
-        "avg_reversal_pts": 16.9
+        "avg_reversal_pts": 16.9,
+        "ev_pts": 9.05
       },
       {
         "zone": "BUY_100",
@@ -378,7 +425,8 @@
         "touch_pct": 34.0,
         "n_reversed": 316,
         "reversal_pct": 80.4,
-        "avg_reversal_pts": 25.9
+        "avg_reversal_pts": 25.9,
+        "ev_pts": 8.79
       }
     ],
     "NDR_TIGHT": [
@@ -390,7 +438,8 @@
         "touch_pct": 13.0,
         "n_reversed": 161,
         "reversal_pct": 63.6,
-        "avg_reversal_pts": 11.8
+        "avg_reversal_pts": 11.8,
+        "ev_pts": 1.53
       },
       {
         "zone": "SELL_50",
@@ -400,7 +449,8 @@
         "touch_pct": 25.1,
         "n_reversed": 161,
         "reversal_pct": 32.9,
-        "avg_reversal_pts": 8.4
+        "avg_reversal_pts": 8.4,
+        "ev_pts": 2.12
       },
       {
         "zone": "SELL_25",
@@ -410,7 +460,9 @@
         "touch_pct": 32.4,
         "n_reversed": 150,
         "reversal_pct": 23.8,
-        "avg_reversal_pts": 6.6
+        "avg_reversal_pts": 6.6,
+        "ev_pts": 2.14,
+        "continuation_pct": 33.4
       },
       {
         "zone": "BUY_25",
@@ -420,7 +472,9 @@
         "touch_pct": 36.6,
         "n_reversed": 85,
         "reversal_pct": 11.9,
-        "avg_reversal_pts": 5.7
+        "avg_reversal_pts": 5.7,
+        "ev_pts": 2.08,
+        "continuation_pct": 22.9
       },
       {
         "zone": "BUY_50",
@@ -430,7 +484,8 @@
         "touch_pct": 31.9,
         "n_reversed": 151,
         "reversal_pct": 24.3,
-        "avg_reversal_pts": 7.6
+        "avg_reversal_pts": 7.6,
+        "ev_pts": 2.41
       },
       {
         "zone": "BUY_100",
@@ -440,7 +495,8 @@
         "touch_pct": 19.3,
         "n_reversed": 214,
         "reversal_pct": 56.9,
-        "avg_reversal_pts": 11.2
+        "avg_reversal_pts": 11.2,
+        "ev_pts": 2.16
       }
     ],
     "NDR_MID": [
@@ -452,7 +508,8 @@
         "touch_pct": 19.8,
         "n_reversed": 206,
         "reversal_pct": 92.8,
-        "avg_reversal_pts": 27.7
+        "avg_reversal_pts": 27.7,
+        "ev_pts": 5.47
       },
       {
         "zone": "SELL_50",
@@ -462,7 +519,8 @@
         "touch_pct": 38.4,
         "n_reversed": 352,
         "reversal_pct": 81.5,
-        "avg_reversal_pts": 20.1
+        "avg_reversal_pts": 20.1,
+        "ev_pts": 7.71
       },
       {
         "zone": "SELL_25",
@@ -472,7 +530,9 @@
         "touch_pct": 51.6,
         "n_reversed": 381,
         "reversal_pct": 65.7,
-        "avg_reversal_pts": 14.8
+        "avg_reversal_pts": 14.8,
+        "ev_pts": 7.65,
+        "continuation_pct": 32.4
       },
       {
         "zone": "BUY_25",
@@ -482,7 +542,9 @@
         "touch_pct": 60.4,
         "n_reversed": 389,
         "reversal_pct": 57.3,
-        "avg_reversal_pts": 12.1
+        "avg_reversal_pts": 12.1,
+        "ev_pts": 7.3,
+        "continuation_pct": 21.5
       },
       {
         "zone": "BUY_50",
@@ -492,7 +554,8 @@
         "touch_pct": 52.0,
         "n_reversed": 471,
         "reversal_pct": 80.5,
-        "avg_reversal_pts": 16.7
+        "avg_reversal_pts": 16.7,
+        "ev_pts": 8.68
       },
       {
         "zone": "BUY_100",
@@ -502,7 +565,8 @@
         "touch_pct": 32.5,
         "n_reversed": 349,
         "reversal_pct": 95.6,
-        "avg_reversal_pts": 25.2
+        "avg_reversal_pts": 25.2,
+        "ev_pts": 8.19
       }
     ],
     "NDR_WIDE": [
@@ -514,7 +578,8 @@
         "touch_pct": 25.4,
         "n_reversed": 223,
         "reversal_pct": 98.2,
-        "avg_reversal_pts": 61.0
+        "avg_reversal_pts": 61.0,
+        "ev_pts": 15.48
       },
       {
         "zone": "SELL_50",
@@ -524,7 +589,8 @@
         "touch_pct": 39.5,
         "n_reversed": 316,
         "reversal_pct": 89.5,
-        "avg_reversal_pts": 39.1
+        "avg_reversal_pts": 39.1,
+        "ev_pts": 15.43
       },
       {
         "zone": "SELL_25",
@@ -534,7 +600,9 @@
         "touch_pct": 49.8,
         "n_reversed": 328,
         "reversal_pct": 73.7,
-        "avg_reversal_pts": 27.9
+        "avg_reversal_pts": 27.9,
+        "ev_pts": 13.9,
+        "continuation_pct": 23.6
       },
       {
         "zone": "BUY_25",
@@ -544,7 +612,9 @@
         "touch_pct": 57.7,
         "n_reversed": 397,
         "reversal_pct": 76.9,
-        "avg_reversal_pts": 22.7
+        "avg_reversal_pts": 22.7,
+        "ev_pts": 13.1,
+        "continuation_pct": 21.3
       },
       {
         "zone": "BUY_50",
@@ -554,7 +624,8 @@
         "touch_pct": 48.2,
         "n_reversed": 394,
         "reversal_pct": 91.4,
-        "avg_reversal_pts": 33.4
+        "avg_reversal_pts": 33.4,
+        "ev_pts": 16.12
       },
       {
         "zone": "BUY_100",
@@ -564,7 +635,8 @@
         "touch_pct": 31.0,
         "n_reversed": 268,
         "reversal_pct": 96.8,
-        "avg_reversal_pts": 53.1
+        "avg_reversal_pts": 53.1,
+        "ev_pts": 16.44
       }
     ],
     "NDR_WIDE_GAP_UP": [
@@ -576,7 +648,8 @@
         "touch_pct": 20.3,
         "n_reversed": 59,
         "reversal_pct": 98.3,
-        "avg_reversal_pts": 55.3
+        "avg_reversal_pts": 55.3,
+        "ev_pts": 11.25
       },
       {
         "zone": "SELL_50",
@@ -586,7 +659,8 @@
         "touch_pct": 30.8,
         "n_reversed": 78,
         "reversal_pct": 85.7,
-        "avg_reversal_pts": 35.0
+        "avg_reversal_pts": 35.0,
+        "ev_pts": 10.79
       },
       {
         "zone": "SELL_25",
@@ -596,7 +670,9 @@
         "touch_pct": 40.7,
         "n_reversed": 83,
         "reversal_pct": 69.2,
-        "avg_reversal_pts": 23.5
+        "avg_reversal_pts": 23.5,
+        "ev_pts": 9.56,
+        "continuation_pct": 20.8
       },
       {
         "zone": "BUY_25",
@@ -606,7 +682,9 @@
         "touch_pct": 44.4,
         "n_reversed": 100,
         "reversal_pct": 76.3,
-        "avg_reversal_pts": 21.0
+        "avg_reversal_pts": 21.0,
+        "ev_pts": 9.31,
+        "continuation_pct": 18.3
       },
       {
         "zone": "BUY_50",
@@ -616,7 +694,8 @@
         "touch_pct": 38.0,
         "n_reversed": 102,
         "reversal_pct": 91.1,
-        "avg_reversal_pts": 32.2
+        "avg_reversal_pts": 32.2,
+        "ev_pts": 12.22
       },
       {
         "zone": "BUY_100",
@@ -626,7 +705,8 @@
         "touch_pct": 24.4,
         "n_reversed": 68,
         "reversal_pct": 94.4,
-        "avg_reversal_pts": 51.9
+        "avg_reversal_pts": 51.9,
+        "ev_pts": 12.66
       }
     ],
     "NDR_WIDE_GAP_DOWN": [
@@ -638,7 +718,8 @@
         "touch_pct": 21.4,
         "n_reversed": 59,
         "reversal_pct": 98.3,
-        "avg_reversal_pts": 65.8
+        "avg_reversal_pts": 65.8,
+        "ev_pts": 14.11
       },
       {
         "zone": "SELL_50",
@@ -648,7 +729,8 @@
         "touch_pct": 32.9,
         "n_reversed": 86,
         "reversal_pct": 93.5,
-        "avg_reversal_pts": 45.5
+        "avg_reversal_pts": 45.5,
+        "ev_pts": 14.97
       },
       {
         "zone": "SELL_25",
@@ -658,7 +740,9 @@
         "touch_pct": 39.3,
         "n_reversed": 88,
         "reversal_pct": 80.0,
-        "avg_reversal_pts": 32.4
+        "avg_reversal_pts": 32.4,
+        "ev_pts": 12.73,
+        "continuation_pct": 22.7
       },
       {
         "zone": "BUY_25",
@@ -668,7 +752,9 @@
         "touch_pct": 45.4,
         "n_reversed": 90,
         "reversal_pct": 70.9,
-        "avg_reversal_pts": 25.1
+        "avg_reversal_pts": 25.1,
+        "ev_pts": 11.39,
+        "continuation_pct": 24.4
       },
       {
         "zone": "BUY_50",
@@ -678,7 +764,8 @@
         "touch_pct": 37.1,
         "n_reversed": 91,
         "reversal_pct": 87.5,
-        "avg_reversal_pts": 37.6
+        "avg_reversal_pts": 37.6,
+        "ev_pts": 13.98
       },
       {
         "zone": "BUY_100",
@@ -688,7 +775,8 @@
         "touch_pct": 25.4,
         "n_reversed": 69,
         "reversal_pct": 97.2,
-        "avg_reversal_pts": 56.5
+        "avg_reversal_pts": 56.5,
+        "ev_pts": 14.32
       }
     ],
     "NDR_MID_GAP_UP": [
@@ -700,7 +788,8 @@
         "touch_pct": 16.1,
         "n_reversed": 51,
         "reversal_pct": 91.1,
-        "avg_reversal_pts": 26.0
+        "avg_reversal_pts": 26.0,
+        "ev_pts": 4.18
       },
       {
         "zone": "SELL_50",
@@ -710,7 +799,8 @@
         "touch_pct": 33.0,
         "n_reversed": 84,
         "reversal_pct": 73.0,
-        "avg_reversal_pts": 18.5
+        "avg_reversal_pts": 18.5,
+        "ev_pts": 6.12
       },
       {
         "zone": "SELL_25",
@@ -720,7 +810,9 @@
         "touch_pct": 42.2,
         "n_reversed": 84,
         "reversal_pct": 57.1,
-        "avg_reversal_pts": 12.8
+        "avg_reversal_pts": 12.8,
+        "ev_pts": 5.42,
+        "continuation_pct": 29.9
       },
       {
         "zone": "BUY_25",
@@ -730,7 +822,9 @@
         "touch_pct": 45.4,
         "n_reversed": 91,
         "reversal_pct": 57.6,
-        "avg_reversal_pts": 11.6
+        "avg_reversal_pts": 11.6,
+        "ev_pts": 5.25,
+        "continuation_pct": 21.5
       },
       {
         "zone": "BUY_50",
@@ -740,7 +834,8 @@
         "touch_pct": 39.4,
         "n_reversed": 108,
         "reversal_pct": 78.8,
-        "avg_reversal_pts": 16.1
+        "avg_reversal_pts": 16.1,
+        "ev_pts": 6.33
       },
       {
         "zone": "BUY_100",
@@ -750,7 +845,8 @@
         "touch_pct": 24.7,
         "n_reversed": 84,
         "reversal_pct": 97.7,
-        "avg_reversal_pts": 25.9
+        "avg_reversal_pts": 25.9,
+        "ev_pts": 6.39
       }
     ],
     "NDR_MID_GAP_DOWN": [
@@ -762,7 +858,8 @@
         "touch_pct": 15.7,
         "n_reversed": 46,
         "reversal_pct": 93.9,
-        "avg_reversal_pts": 28.6
+        "avg_reversal_pts": 28.6,
+        "ev_pts": 4.48
       },
       {
         "zone": "SELL_50",
@@ -772,7 +869,8 @@
         "touch_pct": 31.3,
         "n_reversed": 85,
         "reversal_pct": 86.7,
-        "avg_reversal_pts": 21.7
+        "avg_reversal_pts": 21.7,
+        "ev_pts": 6.8
       },
       {
         "zone": "SELL_25",
@@ -782,7 +880,9 @@
         "touch_pct": 41.2,
         "n_reversed": 93,
         "reversal_pct": 72.1,
-        "avg_reversal_pts": 17.2
+        "avg_reversal_pts": 17.2,
+        "ev_pts": 7.09,
+        "continuation_pct": 38.8
       },
       {
         "zone": "BUY_25",
@@ -792,7 +892,9 @@
         "touch_pct": 49.8,
         "n_reversed": 92,
         "reversal_pct": 59.0,
-        "avg_reversal_pts": 12.9
+        "avg_reversal_pts": 12.9,
+        "ev_pts": 6.41,
+        "continuation_pct": 21.2
       },
       {
         "zone": "BUY_50",
@@ -802,7 +904,8 @@
         "touch_pct": 43.1,
         "n_reversed": 110,
         "reversal_pct": 81.5,
-        "avg_reversal_pts": 17.3
+        "avg_reversal_pts": 17.3,
+        "ev_pts": 7.47
       },
       {
         "zone": "BUY_100",
@@ -812,7 +915,568 @@
         "touch_pct": 28.8,
         "n_reversed": 85,
         "reversal_pct": 94.4,
-        "avg_reversal_pts": 24.5
+        "avg_reversal_pts": 24.5,
+        "ev_pts": 7.05
+      }
+    ],
+    "NDR_WIDE_HtC": [
+      {
+        "zone": "SELL_100",
+        "subset": "NDR_WIDE_HtC",
+        "n": 371,
+        "n_touched": 100,
+        "touch_pct": 27.0,
+        "n_reversed": 98,
+        "reversal_pct": 98.0,
+        "avg_reversal_pts": 60.8,
+        "ev_pts": 16.4
+      },
+      {
+        "zone": "SELL_50",
+        "subset": "NDR_WIDE_HtC",
+        "n": 371,
+        "n_touched": 145,
+        "touch_pct": 39.1,
+        "n_reversed": 132,
+        "reversal_pct": 91.0,
+        "avg_reversal_pts": 37.9,
+        "ev_pts": 14.82
+      },
+      {
+        "zone": "SELL_25",
+        "subset": "NDR_WIDE_HtC",
+        "n": 371,
+        "n_touched": 183,
+        "touch_pct": 49.3,
+        "n_reversed": 134,
+        "reversal_pct": 73.2,
+        "avg_reversal_pts": 27.4,
+        "ev_pts": 13.49,
+        "continuation_pct": 23.0
+      },
+      {
+        "zone": "BUY_25",
+        "subset": "NDR_WIDE_HtC",
+        "n": 371,
+        "n_touched": 192,
+        "touch_pct": 51.8,
+        "n_reversed": 154,
+        "reversal_pct": 80.2,
+        "avg_reversal_pts": 23.8,
+        "ev_pts": 12.29,
+        "continuation_pct": 24.5
+      },
+      {
+        "zone": "BUY_50",
+        "subset": "NDR_WIDE_HtC",
+        "n": 371,
+        "n_touched": 152,
+        "touch_pct": 41.0,
+        "n_reversed": 138,
+        "reversal_pct": 90.8,
+        "avg_reversal_pts": 34.7,
+        "ev_pts": 14.22
+      },
+      {
+        "zone": "BUY_100",
+        "subset": "NDR_WIDE_HtC",
+        "n": 371,
+        "n_touched": 99,
+        "touch_pct": 26.7,
+        "n_reversed": 96,
+        "reversal_pct": 97.0,
+        "avg_reversal_pts": 55.2,
+        "ev_pts": 14.74
+      }
+    ],
+    "NDR_WIDE_LtC": [
+      {
+        "zone": "SELL_100",
+        "subset": "NDR_WIDE_LtC",
+        "n": 358,
+        "n_touched": 82,
+        "touch_pct": 22.9,
+        "n_reversed": 81,
+        "reversal_pct": 98.8,
+        "avg_reversal_pts": 59.6,
+        "ev_pts": 13.64
+      },
+      {
+        "zone": "SELL_50",
+        "subset": "NDR_WIDE_LtC",
+        "n": 358,
+        "n_touched": 138,
+        "touch_pct": 38.5,
+        "n_reversed": 119,
+        "reversal_pct": 86.2,
+        "avg_reversal_pts": 37.3,
+        "ev_pts": 14.37
+      },
+      {
+        "zone": "SELL_25",
+        "subset": "NDR_WIDE_LtC",
+        "n": 358,
+        "n_touched": 169,
+        "touch_pct": 47.2,
+        "n_reversed": 124,
+        "reversal_pct": 73.4,
+        "avg_reversal_pts": 26.9,
+        "ev_pts": 12.72,
+        "continuation_pct": 23.1
+      },
+      {
+        "zone": "BUY_25",
+        "subset": "NDR_WIDE_LtC",
+        "n": 358,
+        "n_touched": 193,
+        "touch_pct": 53.9,
+        "n_reversed": 148,
+        "reversal_pct": 76.7,
+        "avg_reversal_pts": 22.6,
+        "ev_pts": 12.17,
+        "continuation_pct": 18.1
+      },
+      {
+        "zone": "BUY_50",
+        "subset": "NDR_WIDE_LtC",
+        "n": 358,
+        "n_touched": 161,
+        "touch_pct": 45.0,
+        "n_reversed": 152,
+        "reversal_pct": 94.4,
+        "avg_reversal_pts": 32.2,
+        "ev_pts": 14.49
+      },
+      {
+        "zone": "BUY_100",
+        "subset": "NDR_WIDE_LtC",
+        "n": 358,
+        "n_touched": 105,
+        "touch_pct": 29.3,
+        "n_reversed": 101,
+        "reversal_pct": 96.2,
+        "avg_reversal_pts": 49.4,
+        "ev_pts": 14.48
+      }
+    ],
+    "NDR_MID_HtC": [
+      {
+        "zone": "SELL_100",
+        "subset": "NDR_MID_HtC",
+        "n": 372,
+        "n_touched": 77,
+        "touch_pct": 20.7,
+        "n_reversed": 73,
+        "reversal_pct": 94.8,
+        "avg_reversal_pts": 27.1,
+        "ev_pts": 5.61
+      },
+      {
+        "zone": "SELL_50",
+        "subset": "NDR_MID_HtC",
+        "n": 372,
+        "n_touched": 154,
+        "touch_pct": 41.4,
+        "n_reversed": 127,
+        "reversal_pct": 82.5,
+        "avg_reversal_pts": 19.7,
+        "ev_pts": 8.15
+      },
+      {
+        "zone": "SELL_25",
+        "subset": "NDR_MID_HtC",
+        "n": 372,
+        "n_touched": 203,
+        "touch_pct": 54.6,
+        "n_reversed": 128,
+        "reversal_pct": 63.1,
+        "avg_reversal_pts": 14.6,
+        "ev_pts": 7.94,
+        "continuation_pct": 34.0
+      },
+      {
+        "zone": "BUY_25",
+        "subset": "NDR_MID_HtC",
+        "n": 372,
+        "n_touched": 249,
+        "touch_pct": 66.9,
+        "n_reversed": 150,
+        "reversal_pct": 60.2,
+        "avg_reversal_pts": 12.3,
+        "ev_pts": 8.23,
+        "continuation_pct": 20.1
+      },
+      {
+        "zone": "BUY_50",
+        "subset": "NDR_MID_HtC",
+        "n": 372,
+        "n_touched": 217,
+        "touch_pct": 58.3,
+        "n_reversed": 185,
+        "reversal_pct": 85.3,
+        "avg_reversal_pts": 17.4,
+        "ev_pts": 10.16
+      },
+      {
+        "zone": "BUY_100",
+        "subset": "NDR_MID_HtC",
+        "n": 372,
+        "n_touched": 139,
+        "touch_pct": 37.4,
+        "n_reversed": 136,
+        "reversal_pct": 97.8,
+        "avg_reversal_pts": 26.7,
+        "ev_pts": 9.99
+      }
+    ],
+    "NDR_MID_LtC": [
+      {
+        "zone": "SELL_100",
+        "subset": "NDR_MID_LtC",
+        "n": 404,
+        "n_touched": 94,
+        "touch_pct": 23.3,
+        "n_reversed": 85,
+        "reversal_pct": 90.4,
+        "avg_reversal_pts": 27.2,
+        "ev_pts": 6.32
+      },
+      {
+        "zone": "SELL_50",
+        "subset": "NDR_MID_LtC",
+        "n": 404,
+        "n_touched": 170,
+        "touch_pct": 42.1,
+        "n_reversed": 139,
+        "reversal_pct": 81.8,
+        "avg_reversal_pts": 20.5,
+        "ev_pts": 8.62
+      },
+      {
+        "zone": "SELL_25",
+        "subset": "NDR_MID_LtC",
+        "n": 404,
+        "n_touched": 232,
+        "touch_pct": 57.4,
+        "n_reversed": 158,
+        "reversal_pct": 68.1,
+        "avg_reversal_pts": 15.0,
+        "ev_pts": 8.61,
+        "continuation_pct": 32.8
+      },
+      {
+        "zone": "BUY_25",
+        "subset": "NDR_MID_LtC",
+        "n": 404,
+        "n_touched": 257,
+        "touch_pct": 63.6,
+        "n_reversed": 144,
+        "reversal_pct": 56.0,
+        "avg_reversal_pts": 11.6,
+        "ev_pts": 7.38,
+        "continuation_pct": 23.7
+      },
+      {
+        "zone": "BUY_50",
+        "subset": "NDR_MID_LtC",
+        "n": 404,
+        "n_touched": 218,
+        "touch_pct": 54.0,
+        "n_reversed": 169,
+        "reversal_pct": 77.5,
+        "avg_reversal_pts": 15.9,
+        "ev_pts": 8.59
+      },
+      {
+        "zone": "BUY_100",
+        "subset": "NDR_MID_LtC",
+        "n": 404,
+        "n_touched": 139,
+        "touch_pct": 34.4,
+        "n_reversed": 129,
+        "reversal_pct": 92.8,
+        "avg_reversal_pts": 24.0,
+        "ev_pts": 8.27
+      }
+    ],
+    "NDR_WIDE_HtC_GAP_DOWN": [
+      {
+        "zone": "SELL_100",
+        "subset": "NDR_WIDE_HtC_GAP_DOWN",
+        "n": 118,
+        "n_touched": 26,
+        "touch_pct": 22.0,
+        "n_reversed": 25,
+        "reversal_pct": 96.2,
+        "avg_reversal_pts": 65.9,
+        "ev_pts": 14.52
+      },
+      {
+        "zone": "SELL_50",
+        "subset": "NDR_WIDE_HtC_GAP_DOWN",
+        "n": 118,
+        "n_touched": 37,
+        "touch_pct": 31.4,
+        "n_reversed": 36,
+        "reversal_pct": 97.3,
+        "avg_reversal_pts": 41.3,
+        "ev_pts": 12.95
+      },
+      {
+        "zone": "SELL_25",
+        "subset": "NDR_WIDE_HtC_GAP_DOWN",
+        "n": 118,
+        "n_touched": 43,
+        "touch_pct": 36.4,
+        "n_reversed": 34,
+        "reversal_pct": 79.1,
+        "avg_reversal_pts": 28.2,
+        "ev_pts": 10.27,
+        "continuation_pct": 23.3
+      },
+      {
+        "zone": "BUY_25",
+        "subset": "NDR_WIDE_HtC_GAP_DOWN",
+        "n": 118,
+        "n_touched": 45,
+        "touch_pct": 38.1,
+        "n_reversed": 34,
+        "reversal_pct": 75.6,
+        "avg_reversal_pts": 22.9,
+        "ev_pts": 8.72,
+        "continuation_pct": 24.4
+      },
+      {
+        "zone": "BUY_50",
+        "subset": "NDR_WIDE_HtC_GAP_DOWN",
+        "n": 118,
+        "n_touched": 35,
+        "touch_pct": 29.7,
+        "n_reversed": 32,
+        "reversal_pct": 91.4,
+        "avg_reversal_pts": 35.0,
+        "ev_pts": 10.39
+      },
+      {
+        "zone": "BUY_100",
+        "subset": "NDR_WIDE_HtC_GAP_DOWN",
+        "n": 118,
+        "n_touched": 26,
+        "touch_pct": 22.0,
+        "n_reversed": 25,
+        "reversal_pct": 96.2,
+        "avg_reversal_pts": 60.4,
+        "ev_pts": 13.31
+      }
+    ],
+    "NDR_WIDE_LtC_GAP_UP": [
+      {
+        "zone": "SELL_100",
+        "subset": "NDR_WIDE_LtC_GAP_UP",
+        "n": 115,
+        "n_touched": 22,
+        "touch_pct": 19.1,
+        "n_reversed": 22,
+        "reversal_pct": 100.0,
+        "avg_reversal_pts": 54.9,
+        "ev_pts": 10.5
+      },
+      {
+        "zone": "SELL_50",
+        "subset": "NDR_WIDE_LtC_GAP_UP",
+        "n": 115,
+        "n_touched": 34,
+        "touch_pct": 29.6,
+        "n_reversed": 28,
+        "reversal_pct": 82.4,
+        "avg_reversal_pts": 33.6,
+        "ev_pts": 9.93
+      },
+      {
+        "zone": "SELL_25",
+        "subset": "NDR_WIDE_LtC_GAP_UP",
+        "n": 115,
+        "n_touched": 39,
+        "touch_pct": 33.9,
+        "n_reversed": 29,
+        "reversal_pct": 74.4,
+        "avg_reversal_pts": 23.5,
+        "ev_pts": 7.99,
+        "continuation_pct": 17.9
+      },
+      {
+        "zone": "BUY_25",
+        "subset": "NDR_WIDE_LtC_GAP_UP",
+        "n": 115,
+        "n_touched": 50,
+        "touch_pct": 43.5,
+        "n_reversed": 39,
+        "reversal_pct": 78.0,
+        "avg_reversal_pts": 19.3,
+        "ev_pts": 8.38,
+        "continuation_pct": 20.0
+      },
+      {
+        "zone": "BUY_50",
+        "subset": "NDR_WIDE_LtC_GAP_UP",
+        "n": 115,
+        "n_touched": 41,
+        "touch_pct": 35.7,
+        "n_reversed": 39,
+        "reversal_pct": 95.1,
+        "avg_reversal_pts": 31.2,
+        "ev_pts": 11.12
+      },
+      {
+        "zone": "BUY_100",
+        "subset": "NDR_WIDE_LtC_GAP_UP",
+        "n": 115,
+        "n_touched": 28,
+        "touch_pct": 24.3,
+        "n_reversed": 26,
+        "reversal_pct": 92.9,
+        "avg_reversal_pts": 49.4,
+        "ev_pts": 12.03
+      }
+    ],
+    "NDR_WIDE_GAP_FLAT": [
+      {
+        "zone": "SELL_100",
+        "subset": "NDR_WIDE_GAP_FLAT",
+        "n": 319,
+        "n_touched": 107,
+        "touch_pct": 33.5,
+        "n_reversed": 105,
+        "reversal_pct": 98.1,
+        "avg_reversal_pts": 61.4,
+        "ev_pts": 20.61
+      },
+      {
+        "zone": "SELL_50",
+        "subset": "NDR_WIDE_GAP_FLAT",
+        "n": 319,
+        "n_touched": 170,
+        "touch_pct": 53.3,
+        "n_reversed": 152,
+        "reversal_pct": 89.4,
+        "avg_reversal_pts": 37.8,
+        "ev_pts": 20.14
+      },
+      {
+        "zone": "SELL_25",
+        "subset": "NDR_WIDE_GAP_FLAT",
+        "n": 319,
+        "n_touched": 215,
+        "touch_pct": 67.4,
+        "n_reversed": 157,
+        "reversal_pct": 73.0,
+        "avg_reversal_pts": 28.1,
+        "ev_pts": 18.93,
+        "continuation_pct": 25.6
+      },
+      {
+        "zone": "BUY_25",
+        "subset": "NDR_WIDE_GAP_FLAT",
+        "n": 319,
+        "n_touched": 258,
+        "touch_pct": 80.9,
+        "n_reversed": 207,
+        "reversal_pct": 80.2,
+        "avg_reversal_pts": 22.4,
+        "ev_pts": 18.1,
+        "continuation_pct": 21.3
+      },
+      {
+        "zone": "BUY_50",
+        "subset": "NDR_WIDE_GAP_FLAT",
+        "n": 319,
+        "n_touched": 215,
+        "touch_pct": 67.4,
+        "n_reversed": 201,
+        "reversal_pct": 93.5,
+        "avg_reversal_pts": 32.1,
+        "ev_pts": 21.62
+      },
+      {
+        "zone": "BUY_100",
+        "subset": "NDR_WIDE_GAP_FLAT",
+        "n": 319,
+        "n_touched": 134,
+        "touch_pct": 42.0,
+        "n_reversed": 131,
+        "reversal_pct": 97.8,
+        "avg_reversal_pts": 51.9,
+        "ev_pts": 21.8
+      }
+    ],
+    "NDR_MID_GAP_FLAT": [
+      {
+        "zone": "SELL_100",
+        "subset": "NDR_MID_GAP_FLAT",
+        "n": 463,
+        "n_touched": 117,
+        "touch_pct": 25.3,
+        "n_reversed": 109,
+        "reversal_pct": 93.2,
+        "avg_reversal_pts": 28.2,
+        "ev_pts": 7.12
+      },
+      {
+        "zone": "SELL_50",
+        "subset": "NDR_MID_GAP_FLAT",
+        "n": 463,
+        "n_touched": 219,
+        "touch_pct": 47.3,
+        "n_reversed": 183,
+        "reversal_pct": 83.6,
+        "avg_reversal_pts": 20.1,
+        "ev_pts": 9.53
+      },
+      {
+        "zone": "SELL_25",
+        "subset": "NDR_MID_GAP_FLAT",
+        "n": 463,
+        "n_touched": 304,
+        "touch_pct": 65.7,
+        "n_reversed": 204,
+        "reversal_pct": 67.1,
+        "avg_reversal_pts": 14.8,
+        "ev_pts": 9.71,
+        "continuation_pct": 30.9
+      },
+      {
+        "zone": "BUY_25",
+        "subset": "NDR_MID_GAP_FLAT",
+        "n": 463,
+        "n_touched": 365,
+        "touch_pct": 78.8,
+        "n_reversed": 206,
+        "reversal_pct": 56.4,
+        "avg_reversal_pts": 12.0,
+        "ev_pts": 9.44,
+        "continuation_pct": 21.6
+      },
+      {
+        "zone": "BUY_50",
+        "subset": "NDR_MID_GAP_FLAT",
+        "n": 463,
+        "n_touched": 313,
+        "touch_pct": 67.6,
+        "n_reversed": 253,
+        "reversal_pct": 80.8,
+        "avg_reversal_pts": 16.7,
+        "ev_pts": 11.26
+      },
+      {
+        "zone": "BUY_100",
+        "subset": "NDR_MID_GAP_FLAT",
+        "n": 463,
+        "n_touched": 189,
+        "touch_pct": 40.8,
+        "n_reversed": 180,
+        "reversal_pct": 95.2,
+        "avg_reversal_pts": 25.3,
+        "ev_pts": 10.31
       }
     ]
   }
