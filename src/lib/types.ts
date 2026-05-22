@@ -27,6 +27,8 @@ export interface ZoneStat {
   n_reversed: number
   reversal_pct: number
   avg_reversal_pts: number
+  ev_pts: number
+  continuation_pct?: number
 }
 
 export interface NdrSummary {
