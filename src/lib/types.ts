@@ -28,7 +28,8 @@ export interface ZoneStat {
   reversal_pct: number
   avg_reversal_pts: number
   ev_pts: number
-  continuation_pct?: number
+  continuation_pct?: number  // cross-side: SELL_25 → BUY_100 (reversal mode)
+  same_cont_pct?: number     // same-side:  SELL_25 → SELL_100 (continuation mode)
 }
 
 export interface NdrSummary {

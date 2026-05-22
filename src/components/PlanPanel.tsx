@@ -2,9 +2,12 @@ import type { DailyLevels, NdrSummary, ZoneStat, TimeAnalysis, HourStat } from '
 
 const NDR_TIGHT_MAX = 30
 const NDR_WIDE_MIN  = 60
+const GAP_SMALL_PCT = 0.06   // |gap| / prev_range < 6% → continuation day
 
-type NdrCat = 'TIGHT' | 'MID' | 'WIDE'
+type NdrCat     = 'TIGHT' | 'MID' | 'WIDE'
 type PrevPattern = 'HtC' | 'LtC' | 'NEUTRAL'
+type TradeMode  = 'CONTINUATION' | 'REVERSAL'
+type Direction  = 'LONG' | 'SHORT'
 
 function getNdrCat(ndr: number): NdrCat {
   if (ndr < NDR_TIGHT_MAX) return 'TIGHT'
@@ -12,26 +15,25 @@ function getNdrCat(ndr: number): NdrCat {
   return 'MID'
 }
 
-function selectSubset(
+function getTradeMode(gap: number, prevRange: number): TradeMode {
+  if (prevRange === 0) return 'REVERSAL'
+  return Math.abs(gap) / prevRange < GAP_SMALL_PCT ? 'CONTINUATION' : 'REVERSAL'
+}
+
+function selectReversalSubset(
   summary: NdrSummary,
   bucket: NdrCat,
   gap: string,
   pattern: PrevPattern,
 ): { key: string; stats: ZoneStat[] } {
   const candidates: string[] = []
-
   if (pattern !== 'NEUTRAL') {
     if (gap !== 'FLAT') candidates.push(`NDR_${bucket}_${pattern}_GAP_${gap}`)
     candidates.push(`NDR_${bucket}_${pattern}`)
   }
-  if (gap === 'FLAT') {
-    candidates.push(`NDR_${bucket}_GAP_FLAT`)
-  } else {
-    candidates.push(`NDR_${bucket}_GAP_${gap}`)
-  }
+  candidates.push(gap === 'FLAT' ? `NDR_${bucket}_GAP_FLAT` : `NDR_${bucket}_GAP_${gap}`)
   candidates.push(`NDR_${bucket}`)
   candidates.push('ALL')
-
   for (const key of candidates) {
     const stats = summary.stats[key]
     if (stats && stats.length > 0) return { key, stats }
@@ -39,21 +41,50 @@ function selectSubset(
   return { key: 'ALL', stats: summary.stats['ALL'] ?? [] }
 }
 
-function getConviction(bucket: NdrCat, gap: string, pattern: PrevPattern): number {
+function selectContinuationSubset(
+  summary: NdrSummary,
+  bucket: NdrCat,
+  pattern: 'LtC' | 'HtC',
+): { key: string; stats: ZoneStat[] } {
+  const candidates = [
+    `NDR_${bucket}_${pattern}_SMALL_GAP`,
+    `${pattern}_SMALL_GAP`,
+    `NDR_${bucket}_${pattern}`,
+    `NDR_${bucket}`,
+    'ALL',
+  ]
+  for (const key of candidates) {
+    const stats = summary.stats[key]
+    if (stats && stats.length > 0) return { key, stats }
+  }
+  return { key: 'ALL', stats: summary.stats['ALL'] ?? [] }
+}
+
+function getConviction(bucket: NdrCat, gap: string, pattern: PrevPattern, mode: TradeMode): number {
   let score = 0
   if (bucket === 'WIDE') score++
-  if (gap !== 'FLAT') score++
-  if ((pattern === 'HtC' && gap === 'DOWN') || (pattern === 'LtC' && gap === 'UP')) score++
-  return score
+  if (mode === 'REVERSAL') {
+    if (gap !== 'FLAT') score++
+    if ((pattern === 'HtC' && gap === 'DOWN') || (pattern === 'LtC' && gap === 'UP')) score++
+  } else {
+    // Continuation: small gap is confirmed by the mode itself, pattern clarity matters
+    if (pattern !== 'NEUTRAL') score++
+    score++  // continuation mode itself is already a filter
+  }
+  return Math.min(score, 3)
 }
 
 interface Plan {
-  side: 'SELL' | 'BUY'
+  tradeMode: TradeMode
+  direction: Direction
   entryZone: 'SELL_25' | 'BUY_25'
   entry: number
   stop: number
   t1: number
   t2: number
+  t1Label: string
+  t2Label: string
+  stopLabel: string
   rr1: number
   rr2: number
   setupLabel: string
@@ -63,6 +94,7 @@ interface Plan {
   avg_reversal_pts: number
   ev_pts: number
   continuationPct: number | null
+  sameContinuationPct: number | null
   subsetKey: string
   conviction: number
   bestHour: HourStat | null
@@ -77,48 +109,108 @@ function derivePlan(
   summary: NdrSummary | null,
   prevPattern: PrevPattern,
 ): Plan {
-  const cat = getNdrCat(levels.NDR_total)
-  const gap = levels.gap_direction
+  const cat       = getNdrCat(levels.NDR_total)
+  const gap       = levels.gap_direction
+  const tradeMode = getTradeMode(levels.gap, levels.prev_range)
 
-  const side: 'SELL' | 'BUY' = gap === 'UP' ? 'BUY' : 'SELL'
-  const entryZone: 'SELL_25' | 'BUY_25' = side === 'SELL' ? 'SELL_25' : 'BUY_25'
+  let direction: Direction
+  let entryZone: 'SELL_25' | 'BUY_25'
+  let stop: number
+  let stopLabel: string
+  let t1: number, t2: number
+  let t1Label: string, t2Label: string
+  let setupLabel: string, setupColor: string
+  let subsetKey: string
+  let stats: ZoneStat[]
 
-  const gapLabel = gap === 'FLAT' ? 'Flat gap' : `Gap ${gap}`
-  const patternLabel = prevPattern !== 'NEUTRAL' ? ` + ${prevPattern}` : ''
-  const setupLabel = `${side === 'SELL' ? 'Counter-gap SELL' : 'Counter-gap BUY'} — ${cat} NDR + ${gapLabel}${patternLabel}`
-  const setupColor = side === 'SELL' ? '#ff6b6b' : '#44ff88'
+  if (tradeMode === 'CONTINUATION') {
+    // Small gap: yesterday's pattern continues — LtC = UP continuation, HtC = DOWN continuation
+    const effPattern = prevPattern === 'NEUTRAL' ? 'LtC' : prevPattern  // NEUTRAL defaults to LtC (SELL side historically)
+    if (effPattern === 'LtC') {
+      direction  = 'LONG'
+      entryZone  = 'SELL_25'   // LONG breakout above anchor area
+      stop       = levels.anchor
+      stopLabel  = 'Anchor'
+      t1         = levels.SELL_50
+      t2         = levels.SELL_100
+      t1Label    = 'SELL_50'
+      t2Label    = 'SELL_100'
+      setupColor = '#44ff88'
+      setupLabel = `Continuación LONG — ${cat} NDR + LtC + Gap mínimo`
+    } else {
+      direction  = 'SHORT'
+      entryZone  = 'BUY_25'    // SHORT breakdown below anchor area
+      stop       = levels.anchor
+      stopLabel  = 'Anchor'
+      t1         = levels.BUY_50
+      t2         = levels.BUY_100
+      t1Label    = 'BUY_50'
+      t2Label    = 'BUY_100'
+      setupColor = '#ff6b6b'
+      setupLabel = `Continuación SHORT — ${cat} NDR + HtC + Gap mínimo`
+    }
+    const result = summary
+      ? selectContinuationSubset(summary, cat, effPattern)
+      : { key: 'ALL', stats: [] }
+    subsetKey = result.key
+    stats     = result.stats
+  } else {
+    // REVERSAL mode: counter-gap
+    if (gap === 'UP') {
+      direction  = 'LONG'
+      entryZone  = 'BUY_25'
+      stop       = levels.BUY_50
+      stopLabel  = 'BUY_50'
+      t1         = levels.anchor
+      t2         = levels.SELL_100
+      t1Label    = 'Anchor'
+      t2Label    = 'SELL_100'
+      setupColor = '#44ff88'
+    } else {
+      direction  = 'SHORT'
+      entryZone  = 'SELL_25'
+      stop       = levels.SELL_50
+      stopLabel  = 'SELL_50'
+      t1         = levels.anchor
+      t2         = levels.BUY_100
+      t1Label    = 'Anchor'
+      t2Label    = 'BUY_100'
+      setupColor = '#ff6b6b'
+    }
+    const patternLabel = prevPattern !== 'NEUTRAL' ? ` + ${prevPattern}` : ''
+    const gapLabel     = gap === 'FLAT' ? 'Gap flat' : `Gap ${gap}`
+    setupLabel = `Reversión ${direction} — ${cat} NDR + ${gapLabel}${patternLabel}`
+    const result = summary
+      ? selectReversalSubset(summary, cat, gap, prevPattern)
+      : { key: 'ALL', stats: [] }
+    subsetKey = result.key
+    stats     = result.stats
+  }
 
-  const { key: subsetKey, stats } = summary
-    ? selectSubset(summary, cat, gap, prevPattern)
-    : { key: 'ALL', stats: [] }
-  const byZone = Object.fromEntries(stats.map((s) => [s.zone, s]))
+  const byZone    = Object.fromEntries(stats.map((s) => [s.zone, s]))
   const entryStat: ZoneStat | undefined = byZone[entryZone]
+  const entry     = levels[entryZone]
+  const risk      = Math.abs(entry - stop)
+  const rr1       = risk > 0 ? Math.abs(t1 - entry) / risk : 0
+  const rr2       = risk > 0 ? Math.abs(t2 - entry) / risk : 0
+  const conviction = getConviction(cat, gap, prevPattern, tradeMode)
 
-  const entry = levels[entryZone]
-  const stop  = side === 'SELL' ? levels.SELL_50 : levels.BUY_50
-  const t1    = levels.anchor
-  const t2    = side === 'SELL' ? levels.BUY_100 : levels.SELL_100
-  const risk  = Math.abs(entry - stop)
-  const rr1   = risk > 0 ? Math.abs(t1 - entry) / risk : 0
-  const rr2   = risk > 0 ? Math.abs(t2 - entry) / risk : 0
-
-  const conviction = getConviction(cat, gap, prevPattern)
-
-  const timeKey = `${entryZone}_${gap}_${cat}`
+  const timeKey   = `${entryZone}_${gap}_${cat}`
   const hours: HourStat[] = timeData?.[timeKey] ?? []
   const tradeable = hours.filter((h) => h.hour !== 15 && h.count >= 3)
   const sorted    = [...tradeable].sort((a, b) => b.rev10_pct - a.rev10_pct)
 
   return {
-    side, entryZone, entry, stop, t1, t2, rr1, rr2,
+    tradeMode, direction, entryZone, entry, stop, stopLabel,
+    t1, t2, t1Label, t2Label, rr1, rr2,
     setupLabel, setupColor,
-    touch_pct:        entryStat?.touch_pct        ?? 0,
-    reversal_pct:     entryStat?.reversal_pct     ?? 0,
-    avg_reversal_pts: entryStat?.avg_reversal_pts ?? 0,
-    ev_pts:           entryStat?.ev_pts           ?? 0,
-    continuationPct:  entryStat?.continuation_pct ?? null,
-    subsetKey,
-    conviction,
+    touch_pct:          entryStat?.touch_pct         ?? 0,
+    reversal_pct:       entryStat?.reversal_pct      ?? 0,
+    avg_reversal_pts:   entryStat?.avg_reversal_pts  ?? 0,
+    ev_pts:             entryStat?.ev_pts            ?? 0,
+    continuationPct:    entryStat?.continuation_pct  ?? null,
+    sameContinuationPct: entryStat?.same_cont_pct    ?? null,
+    subsetKey, conviction,
     bestHour:   sorted[0] ?? null,
     secondHour: sorted[1] ?? null,
     hours: tradeable,
@@ -126,30 +218,28 @@ function derivePlan(
   }
 }
 
-function RRVisualBar({ side, stop, entry, t1 }: { side: 'SELL' | 'BUY'; stop: number; entry: number; t1: number }) {
+function RRVisualBar({
+  direction, stop, entry, t1,
+}: { direction: Direction; stop: number; entry: number; t1: number }) {
   const riskDist   = Math.abs(entry - stop)
   const rewardDist = Math.abs(t1 - entry)
-  const total = riskDist + rewardDist
-  const riskPct   = total > 0 ? (riskDist / total) * 100 : 33
-  const rewardPct = total > 0 ? (rewardDist / total) * 100 : 67
+  const total      = riskDist + rewardDist
+  const riskPct    = total > 0 ? (riskDist   / total) * 100 : 33
+  const rewardPct  = total > 0 ? (rewardDist / total) * 100 : 67
 
   return (
     <div className="bg-[#0d1117] rounded-lg p-3 border border-[#30363d] space-y-2 mt-2.5">
       <div className="flex justify-between text-[9px] uppercase tracking-wider font-extrabold text-[#8b949e]">
         <span>Visual R:R (T1)</span>
-        <span className={side === 'SELL' ? 'text-[#ff6b6b]' : 'text-[#44ff88]'}>
-          {side === 'SELL' ? 'Short Setup' : 'Long Setup'}
+        <span className={direction === 'SHORT' ? 'text-[#ff6b6b]' : 'text-[#44ff88]'}>
+          {direction === 'SHORT' ? 'Short Setup' : 'Long Setup'}
         </span>
       </div>
       <div className="h-2 w-full rounded-full bg-[#21262d] flex overflow-hidden border border-[#30363d]/30">
-        <div
-          className="h-full bg-gradient-to-r from-[#ff4444]/90 to-[#ff6b6b]/95 transition-all duration-300"
-          style={{ width: `${riskPct}%` }}
-        />
-        <div
-          className="h-full bg-gradient-to-r from-[#44ff88]/95 to-[#00cc66]/90 transition-all duration-300"
-          style={{ width: `${rewardPct}%` }}
-        />
+        <div className="h-full bg-gradient-to-r from-[#ff4444]/90 to-[#ff6b6b]/95 transition-all duration-300"
+             style={{ width: `${riskPct}%` }} />
+        <div className="h-full bg-gradient-to-r from-[#44ff88]/95 to-[#00cc66]/90 transition-all duration-300"
+             style={{ width: `${rewardPct}%` }} />
       </div>
       <div className="flex justify-between text-[9px] font-mono text-[#8b949e] pt-1">
         <div className="flex flex-col">
@@ -190,9 +280,9 @@ function HourBar({ stat, best }: { stat: HourStat; best: boolean }) {
 }
 
 interface Props {
-  levels: DailyLevels
-  timeData: TimeAnalysis | null
-  summary: NdrSummary | null
+  levels:      DailyLevels
+  timeData:    TimeAnalysis | null
+  summary:     NdrSummary | null
   prevPattern: PrevPattern
 }
 
@@ -208,11 +298,17 @@ export default function PlanPanel({ levels, timeData, summary, prevPattern }: Pr
 
   const convictionLabel = (['LOW', 'LOW', 'MEDIUM', 'HIGH'] as const)[plan.conviction] ?? 'LOW'
   const convictionColor = ['#8b949e', '#8b949e', '#ffd700', '#44ff88'][plan.conviction] ?? '#8b949e'
+  const modeColor = plan.tradeMode === 'CONTINUATION' ? '#bc8cff' : '#58a6ff'
+  const modeLabel = plan.tradeMode === 'CONTINUATION' ? '↗ CONT' : '↩ REV'
 
-  const t2Label = plan.side === 'SELL' ? 'BUY_100' : 'SELL_100'
-  const t1Pts   = Math.abs(plan.t1 - plan.entry).toFixed(1)
-  const t2Pts   = Math.abs(plan.t2 - plan.entry).toFixed(1)
+  const t1Pts   = Math.abs(plan.t1   - plan.entry).toFixed(1)
+  const t2Pts   = Math.abs(plan.t2   - plan.entry).toFixed(1)
   const stopPts = Math.abs(plan.stop - plan.entry).toFixed(1)
+
+  // For T2, show same-side % for continuation mode, cross-side % for reversal mode
+  const t2Pct = plan.tradeMode === 'CONTINUATION'
+    ? plan.sameContinuationPct
+    : plan.continuationPct
 
   return (
     <div
@@ -222,9 +318,15 @@ export default function PlanPanel({ levels, timeData, summary, prevPattern }: Pr
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[#30363d]/60 pb-2">
         <h3 className="text-xs uppercase tracking-widest font-extrabold text-[#e6edf3]">Plan del Día</h3>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 flex-wrap justify-end">
+          <span
+            className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
+            style={{ color: modeColor, borderColor: modeColor + '44', background: modeColor + '11' }}
+          >
+            {modeLabel}
+          </span>
           <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full border ${catConfig}`}>
-            {cat} NDR ({levels.NDR_total.toFixed(1)} pts)
+            {cat} ({levels.NDR_total.toFixed(1)} pts)
           </span>
           <span
             className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
@@ -243,13 +345,20 @@ export default function PlanPanel({ levels, timeData, summary, prevPattern }: Pr
         </div>
       </div>
 
-      {/* Subset + stats context */}
+      {/* Subset + stats */}
       <div className="text-[9px] text-[#8b949e] font-mono bg-[#0d1117] px-2 py-1 rounded border border-[#30363d]/40">
         Datos: <span className="text-[#58a6ff]">{plan.subsetKey}</span>
         {' · '}touch <span className="text-[#e6edf3]">{plan.touch_pct.toFixed(0)}%</span>
         {' · '}rev <span className="text-[#e6edf3]">{plan.reversal_pct.toFixed(0)}%</span>
         {' · '}EV <span className="text-[#ffd700] font-bold">{plan.ev_pts.toFixed(1)} pts/día</span>
       </div>
+
+      {/* Gap pct info for continuation mode */}
+      {plan.tradeMode === 'CONTINUATION' && (
+        <div className="text-[9px] text-[#bc8cff] bg-[#bc8cff]/5 border border-[#bc8cff]/20 px-2 py-1 rounded font-mono">
+          Gap {Math.abs(levels.gap).toFixed(2)} pts ({(Math.abs(levels.gap) / levels.prev_range * 100).toFixed(1)}% del rango) — modo continuación activo
+        </div>
+      )}
 
       {/* Plan */}
       {plan.noEdge ? (
@@ -267,7 +376,9 @@ export default function PlanPanel({ levels, timeData, summary, prevPattern }: Pr
               <div className="font-mono font-extrabold text-sm" style={{ color: plan.setupColor }}>
                 {plan.entry.toFixed(2)}
               </div>
-              <div className="text-[9px] text-[#8b949e] font-semibold mt-0.5">{plan.entryZone}</div>
+              <div className="text-[9px] text-[#8b949e] font-semibold mt-0.5">
+                {plan.entryZone} · {plan.direction}
+              </div>
             </div>
 
             <div className="bg-[#0d1117] rounded-lg p-2 border border-[#30363d]/80">
@@ -276,7 +387,7 @@ export default function PlanPanel({ levels, timeData, summary, prevPattern }: Pr
                 {plan.stop.toFixed(2)}
               </div>
               <div className="text-[9px] text-[#8b949e] font-semibold mt-0.5">
-                {plan.side === 'SELL' ? 'SELL_50' : 'BUY_50'} (−{stopPts} pts)
+                {plan.stopLabel} (−{stopPts} pts)
               </div>
             </div>
           </div>
@@ -289,7 +400,7 @@ export default function PlanPanel({ levels, timeData, summary, prevPattern }: Pr
               <div>
                 <div className="text-[9px] text-[#8b949e] uppercase font-bold">T1 — 50% de la posición</div>
                 <div className="font-mono font-extrabold text-sm text-[#44ff88]">{plan.t1.toFixed(2)}</div>
-                <div className="text-[9px] text-[#8b949e] mt-0.5">Anchor · R:R 1:{plan.rr1.toFixed(1)}</div>
+                <div className="text-[9px] text-[#8b949e] mt-0.5">{plan.t1Label} · R:R 1:{plan.rr1.toFixed(1)}</div>
               </div>
               <div className="text-right">
                 <div className="text-[9px] text-[#8b949e]">Potencial</div>
@@ -302,13 +413,13 @@ export default function PlanPanel({ levels, timeData, summary, prevPattern }: Pr
               <div>
                 <div className="text-[9px] text-[#8b949e] uppercase font-bold">T2 — 50% restante</div>
                 <div className="font-mono font-extrabold text-sm text-[#58a6ff]">{plan.t2.toFixed(2)}</div>
-                <div className="text-[9px] text-[#8b949e] mt-0.5">{t2Label} · R:R 1:{plan.rr2.toFixed(1)}</div>
+                <div className="text-[9px] text-[#8b949e] mt-0.5">{plan.t2Label} · R:R 1:{plan.rr2.toFixed(1)}</div>
               </div>
               <div className="text-right">
                 <div className="text-[9px] text-[#8b949e]">Potencial</div>
                 <div className="font-mono font-bold text-[#58a6ff]">+{t2Pts} pts</div>
-                {plan.continuationPct !== null && (
-                  <div className="text-[9px] text-[#8b949e]">cont {plan.continuationPct.toFixed(0)}%</div>
+                {t2Pct !== null && (
+                  <div className="text-[9px] text-[#8b949e]">cont {t2Pct.toFixed(0)}%</div>
                 )}
               </div>
             </div>
@@ -318,7 +429,7 @@ export default function PlanPanel({ levels, timeData, summary, prevPattern }: Pr
             </div>
           </div>
 
-          <RRVisualBar side={plan.side} stop={plan.stop} entry={plan.entry} t1={plan.t1} />
+          <RRVisualBar direction={plan.direction} stop={plan.stop} entry={plan.entry} t1={plan.t1} />
         </>
       )}
 
